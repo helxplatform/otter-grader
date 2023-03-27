@@ -17,7 +17,7 @@ RUN wget -O /tmp/wkhtmltopdf.deb https://github.com/wkhtmltopdf/packaging/releas
     apt-get install -y libc-bin libfontconfig1-dev /tmp/wkhtmltopdf.deb && \
 
     # Install otter-grader:
-    pip install otter-grader ipython && \
+    pip install otter-grader ipython nbconvert pdfkit pyPDF2==2.12.1 && \
     /usr/local/bin/otter --version && \
     PATH=$PATH:/usr/local/bin && \
 
