@@ -16,7 +16,7 @@ def select_students(user, password, host, port):
         cur = conn.cursor()
 
         # Execute the SQL query
-        cur.execute("SELECT id,irst_name,last_name,professor_onyen FROM student ORDER BY last_name,first_name")
+        cur.execute("SELECT id,first_name,last_name,professor_onyen FROM student ORDER BY last_name,first_name")
 
         # Fetch all the rows
         rows = cur.fetchall()
