@@ -2,11 +2,11 @@ import os
 import argparse
 import psycopg2
 
-def select_students(user, password, host, port):
+def select_students(dbname, user, password, host, port):
     # Establish a connection to the database
     try:
         conn = psycopg2.connect(
-            dbname="grader_config", 
+            dbname=dbname, 
             user=user, 
             password=password, 
             host=host, 
@@ -34,6 +34,7 @@ def select_students(user, password, host, port):
 
 def main():
     parser = argparse.ArgumentParser(description='Select students from database.')
+    parser.add_argument('-d', '--dbname', default=os.getenv('DB_NAME'), help='Database name')
     parser.add_argument('-u', '--user', default=os.getenv('DB_USER'), help='Database user')
     parser.add_argument('-p', '--password', default=os.getenv('DB_PASSWORD'), help='Database password')
     parser.add_argument('-H', '--host', default=os.getenv('DB_HOST'), help='Database host')
@@ -41,7 +42,8 @@ def main():
     args = parser.parse_args()
 
     # Call the function with command line arguments
-    select_students(args.user, args.password, args.host, args.port)
+    select_students(args.dbname, args.user, args.password, args.host, args.port)
+
 
 
 if __name__ == "__main__":
