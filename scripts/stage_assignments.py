@@ -21,9 +21,6 @@ def validate_paths(src, dest):
         err_msg = f"Destnation directory's dirname {dest_dirname} is not valid."
         raise FleNotFoundError(err_msg)
 
-    print("Path validation successful!")
-
-
 
 def stage_student_repos(src, dest):
 
@@ -31,25 +28,25 @@ def stage_student_repos(src, dest):
     os.makedirs(dest)
 
     # Iterate through subdirectories in the source directory
-    for subdir in os.scandir(src):
-        if subdir.is_dir():
-            # Get the name of the subdirectory
-            subdir_name = subdir.name
+    for srcdir in os.scandir(src):
+
+        # Exclude dest subdir if it's in the src directory
+        if srcdir.is_dir() and srcdir.name != os.path.basename(os.path.normpath(dest)):
 
             # Iterate through files in the subdirectory
-            for file in os.scandir(subdir.path):
+            for file in os.scandir(srcdir.path):
                 if file.is_file() and file.name.endswith(".ipynb"):
                     # Get the filename without the extension
                     filename = os.path.splitext(file.name)[0]
 
                     # Create the new filename
-                    new_filename = f"{subdir_name}_{filename}.ipynb"
+                    new_filename = f"{srcdir.name}_{filename}.ipynb"
 
                     # Copy the .ipynb file to the destination directory with the new filename
+                    print(f"Copying {file.path} to {os.path.join(dest, new_filename)}")
                     shutil.copy2(file.path, os.path.join(dest, new_filename))
-                    shutil.chown(os.path.join(dest, new_filename), user=otter, group=otter)
 
-    print("Student repositories staged successfully!")
+    print("Student repositories staged successfully")
 
 
 if __name__ == "__main__":
